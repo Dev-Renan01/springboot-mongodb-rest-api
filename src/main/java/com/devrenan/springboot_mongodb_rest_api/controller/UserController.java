@@ -28,5 +28,7 @@ public class UserController {
         users.add(maria);  //Add os Users na lista, poderia ser tambem - users.addAll(Array.asList(joao, maria))
         users.add(joao);
         return ResponseEntity.ok().body(users);
+
+
     }
 }
