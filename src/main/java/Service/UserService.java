@@ -13,25 +13,33 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public User save(User user){
+        return userRepository.save(user);
+    }
+
     public List<User> findAll(){
         return userRepository.findAll();
     }
 
-    public void save(User user){
-        userRepository.save(user);
-    }
-
-    public void update(User user){
+    public User update(User user){
         if(user.getId() == null){
-            throw new RuntimeException("Informe um id Existente!");
+            throw new RuntimeException("Informe um id válido!");
         }
-        userRepository.save(user);
+
+        if(!userRepository.existsById(user.getId())){
+            throw new RuntimeException("Usuário não encontrado!");
+        }
+        return userRepository.save(user);
     }
 
-    public void delete(User user){
-        if (user.getId() == null){
-            throw new RuntimeException("Informe um id existente!");
+    public void deleteById(String id){
+        if (id == null){
+            throw new RuntimeException("Informe um id válido");
         }
-        userRepository.deleteById(user.getId());
+
+        if(!userRepository.existsById(id)){
+            throw new RuntimeException("Usuário não encontrado!");
+        }
+        userRepository.deleteById(id);
     }
 }

@@ -8,6 +8,7 @@ class SpringbootMongodbRestApiApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
