@@ -1,5 +1,6 @@
 package com.devrenan.springboot_mongodb_rest_api.controller;
 
+import com.devrenan.springboot_mongodb_rest_api.dto.UserDTO;
 import com.devrenan.springboot_mongodb_rest_api.service.UserService;
 import com.devrenan.springboot_mongodb_rest_api.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,10 @@ public class UserController {
     }
 
     @GetMapping(value = "/findAll")
-    public ResponseEntity<List<User>> findAll(){
+    public ResponseEntity<List<UserDTO>> findAll(){
         List<User> user = service.findAll();
-        return ResponseEntity.ok().body(user);
+        List<UserDTO> userDTO =  
+        return ResponseEntity.ok().body(userDTO);
 
     }
 
