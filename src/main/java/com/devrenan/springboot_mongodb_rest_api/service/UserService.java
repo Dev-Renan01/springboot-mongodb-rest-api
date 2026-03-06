@@ -1,9 +1,8 @@
-package Service;
-
+package com.devrenan.springboot_mongodb_rest_api.service;
 import com.devrenan.springboot_mongodb_rest_api.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.UserRepository;
+import com.devrenan.springboot_mongodb_rest_api.repository.UserRepository;
 
 import java.util.List;
 
