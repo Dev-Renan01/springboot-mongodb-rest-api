@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping
@@ -21,9 +22,15 @@ public class UserController {
 
 
     @PostMapping(value = "/save")
-    public ResponseEntity<String> save(@RequestBody User user){
+    public ResponseEntity<String> save(@RequestBody User user) {
         service.save(user);
         return ResponseEntity.ok().body("Usuário criado com sucesso!");
+    }
+
+    @GetMapping(value = "/findById")
+    public Optional<User> findById(@PathVariable String id){
+        return service.findById(id);
+
     }
 
     @GetMapping(value = "/findAll")
