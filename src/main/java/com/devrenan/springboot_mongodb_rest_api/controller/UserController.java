@@ -6,6 +6,8 @@ import com.devrenan.springboot_mongodb_rest_api.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,30 +25,41 @@ public class UserController {
 
 
     @PostMapping(value = "/save")
-    public ResponseEntity<String> save(@RequestBody User user) {
-        service.save(user);
-        return ResponseEntity.ok().body("Usuário criado com sucesso!");
+    public ResponseEntity<UserDTO> save(@RequestBody User user) {
+
+       User user1 = service.save(user);
+        return ResponseEntity.ok().body(new UserDTO(user1));
     }
 
-    @GetMapping(value = "/findById")
-    public Optional<User> findById(@PathVariable String id){
-        return service.findById(id);
+    @GetMapping(value = "/findById/{id}")
+    public ResponseEntity<UserDTO> findById(@PathVariable String id){
 
+        Optional<User> users = service.findById(id);
+
+        UserDTO userDTO = new UserDTO(users.get());// Pega o objeto User que está dentro do Optional
+                                                      // e cria um novo UserDTO a partir dele
+        return ResponseEntity.ok().body(userDTO);
     }
 
     @GetMapping(value = "/findAll")
-    public ResponseEntity<List<UserDTO>> findAll(){
-        List<User> user = service.findAll();
-        List<UserDTO> userDTO =  
-        return ResponseEntity.ok().body(userDTO);
+     public ResponseEntity<List<UserDTO>> findAll(){
 
-    }
+        List<User> users = service.findAll();
+        List<UserDTO> usersDTO = new ArrayList<>();
+
+        for(User user : users){
+            usersDTO.add(new UserDTO(user));
+        }
+        return ResponseEntity.ok().body(usersDTO);
+      }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<String> update(@PathVariable String id, @RequestBody User user){
+    public ResponseEntity<UserDTO> update(@PathVariable String id, @RequestBody User user){
+
         user.setId(id); //OBS: Pega o id da URL e coloca dentro do objeto!
-        service.update(user);
-        return ResponseEntity.ok().body("Usuário atualizado com sucesso!");
+        User user1 = service.update(user);
+
+        return ResponseEntity.ok().body(new UserDTO(user1));
     }
 
     @DeleteMapping(value = "/delete/{id}")

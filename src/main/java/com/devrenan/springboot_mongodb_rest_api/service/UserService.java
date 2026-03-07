@@ -18,8 +18,17 @@ public class UserService {
     }
 
     public Optional<User> findById(String id){
+        if(id == null){
+            throw new RuntimeException("Informe um id válido!");
+        }
+
+        if(!userRepository.existsById(id)){
+            throw new RuntimeException("Usuário não encontrado!");
+        }
+
        return userRepository.findById(id);
     }
+
     public List<User> findAll(){
         return userRepository.findAll();
     }
@@ -32,6 +41,7 @@ public class UserService {
         if(!userRepository.existsById(user.getId())){
             throw new RuntimeException("Usuário não encontrado!");
         }
+
         return userRepository.save(user);
     }
 
