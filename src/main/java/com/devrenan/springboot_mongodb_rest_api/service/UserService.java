@@ -1,5 +1,6 @@
 package com.devrenan.springboot_mongodb_rest_api.service;
 import com.devrenan.springboot_mongodb_rest_api.model.User;
+import com.devrenan.springboot_mongodb_rest_api.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.devrenan.springboot_mongodb_rest_api.repository.UserRepository;
@@ -18,15 +19,14 @@ public class UserService {
     }
 
     public Optional<User> findById(String id){
-        if(id == null){
-            throw new RuntimeException("Informe um id válido!");
+
+        Optional<User> user = userRepository.findById(id);
+
+        if(!user.isPresent()){
+            throw new ObjectNotFoundException("Usuário não encontrado!");
         }
 
-        if(!userRepository.existsById(id)){
-            throw new RuntimeException("Usuário não encontrado!");
-        }
-
-       return userRepository.findById(id);
+       return user;
     }
 
     public List<User> findAll(){

@@ -31,15 +31,15 @@ public class UserController {
         return ResponseEntity.ok().body(new UserDTO(user1));
     }
 
+
     @GetMapping(value = "/findById/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable String id){
 
         Optional<User> users = service.findById(id);
 
-        UserDTO userDTO = new UserDTO(users.get());// Pega o objeto User que está dentro do Optional
-                                                      // e cria um novo UserDTO a partir dele
-        return ResponseEntity.ok().body(userDTO);
+        return ResponseEntity.ok().body(new UserDTO(users.get()));
     }
+
 
     @GetMapping(value = "/findAll")
      public ResponseEntity<List<UserDTO>> findAll(){
