@@ -2,21 +2,18 @@ package com.devrenan.springboot_mongodb_rest_api.dto;
 
 import com.devrenan.springboot_mongodb_rest_api.model.User;
 
-import java.io.Serializable;
-
-public class UserDTO implements Serializable{
-    private static final long serialVersionUID=1l;
+public class UserResponseDTO {
 
     private String id;
     private String name;
     private String email;
 
-    public UserDTO(){}
+    public UserResponseDTO(){}
 
-    public UserDTO (User user){
-        id = user.getId();
-        name = user.getName();
-        email = user.getEmail();
+    public UserResponseDTO(User user){
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
     }
 
     public String getId() {

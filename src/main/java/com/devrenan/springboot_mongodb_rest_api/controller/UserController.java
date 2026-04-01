@@ -1,6 +1,6 @@
 package com.devrenan.springboot_mongodb_rest_api.controller;
 
-import com.devrenan.springboot_mongodb_rest_api.dto.UserDTO;
+import com.devrenan.springboot_mongodb_rest_api.dto.UserResponseDTO;
 import com.devrenan.springboot_mongodb_rest_api.service.UserService;
 import com.devrenan.springboot_mongodb_rest_api.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,41 +25,41 @@ public class UserController {
 
 
     @PostMapping(value = "/save")
-    public ResponseEntity<UserDTO> save(@RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> save(@RequestBody User user) {
 
        User user1 = service.save(user);
-        return ResponseEntity.ok().body(new UserDTO(user1));
+        return ResponseEntity.ok().body(new UserResponseDTO(user1));
     }
 
 
     @GetMapping(value = "/findById/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable String id){
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable String id){
 
         Optional<User> users = service.findById(id);
 
-        return ResponseEntity.ok().body(new UserDTO(users.get()));
+        return ResponseEntity.ok().body(new UserResponseDTO(users.get()));
     }
 
 
     @GetMapping(value = "/findAll")
-     public ResponseEntity<List<UserDTO>> findAll(){
+     public ResponseEntity<List<UserResponseDTO>> findAll(){
 
         List<User> users = service.findAll();
-        List<UserDTO> usersDTO = new ArrayList<>();
+        List<UserResponseDTO> usersDTO = new ArrayList<>();
 
         for(User user : users){
-            usersDTO.add(new UserDTO(user));
+            usersDTO.add(new UserResponseDTO(user));
         }
         return ResponseEntity.ok().body(usersDTO);
       }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable String id, @RequestBody User user){
+    public ResponseEntity<UserResponseDTO> update(@PathVariable String id, @RequestBody User user){
 
         user.setId(id); //OBS: Pega o id da URL e coloca dentro do objeto!
         User user1 = service.update(user);
 
-        return ResponseEntity.ok().body(new UserDTO(user1));
+        return ResponseEntity.ok().body(new UserResponseDTO(user1));
     }
 
     @DeleteMapping(value = "/delete/{id}")
