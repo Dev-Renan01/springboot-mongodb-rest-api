@@ -1,9 +1,11 @@
 package com.devrenan.springboot_mongodb_rest_api.controller;
 
+import com.devrenan.springboot_mongodb_rest_api.dto.UserRequestDTO;
 import com.devrenan.springboot_mongodb_rest_api.dto.UserResponseDTO;
 import com.devrenan.springboot_mongodb_rest_api.service.UserService;
 import com.devrenan.springboot_mongodb_rest_api.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,47 +27,56 @@ public class UserController {
 
 
     @PostMapping(value = "/save")
-    public ResponseEntity<UserResponseDTO> save(@RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> save(@RequestBody UserRequestDTO dto) {
+        User user = new User();
 
-       User user1 = service.save(user);
-        return ResponseEntity.ok().body(new UserResponseDTO(user1));
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+
+        User userSalvo = service.save(user);
+
+        return ResponseEntity.ok().body(new UserResponseDTO(userSalvo));
     }
-
 
     @GetMapping(value = "/findById/{id}")
     public ResponseEntity<UserResponseDTO> findById(@PathVariable String id){
-
         Optional<User> users = service.findById(id);
 
-        return ResponseEntity.ok().body(new UserResponseDTO(users.get()));
+        return ResponseEntity.ok(new UserResponseDTO(users.get()));
     }
-
 
     @GetMapping(value = "/findAll")
-     public ResponseEntity<List<UserResponseDTO>> findAll(){
+     public ResponseEntity<List<UserResponseDTO>> findAll() {
+        List<User> users = new ArrayList<>();
 
-        List<User> users = service.findAll();
-        List<UserResponseDTO> usersDTO = new ArrayList<>();
+        List<UserResponseDTO> lista = new ArrayList<>();
 
-        for(User user : users){
-            usersDTO.add(new UserResponseDTO(user));
+        for(User u : users) {
+            lista.add(new UserResponseDTO(u));
         }
-        return ResponseEntity.ok().body(usersDTO);
-      }
+        return ResponseEntity.status(HttpStatus.OK).body(lista);
 
-    @PutMapping(value = "/update/{id}")
-    public ResponseEntity<UserResponseDTO> update(@PathVariable String id, @RequestBody User user){
-
-        user.setId(id); //OBS: Pega o id da URL e coloca dentro do objeto!
-        User user1 = service.update(user);
-
-        return ResponseEntity.ok().body(new UserResponseDTO(user1));
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable String id){
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserResponseDTO> update(@PathVariable String id, @RequestBody UserRequestDTO dto){
+        User user = new User();
+        user.setId(id);
+
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+
+        return ResponseEntity.ok(new UserResponseDTO(user));
+
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id){
         service.deleteById(id);
-        return ResponseEntity.ok().body("Usuário deletado com sucesso!");
-    }
 
+        return ResponseEntity.noContent().build();
+
+    }
 }
